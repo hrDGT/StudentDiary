@@ -1,51 +1,16 @@
-$disciplines_message = [
-  "Выберите необходимый вариант:",
-  "1. Показать аналитику по семестру",
-  "2. Показать аналитику по активными семестрам",
-  "3. Показать аналитику по всем семестрам",
-  "4. Вернуться",
-]
+# frozen_string_literal: true
 
-def show_analytics_options
-  loop do
-    clear_lines(0)
-    puts $disciplines_message
-    user_choice = gets.chomp
-    $extra_lines_to_clear += 1
-    case user_choice
-    when "1"
-      clear_lines($disciplines_message.size + $extra_lines_to_clear - 1)
-      # Код ниже — временная заглушка
-      $extra_lines_to_clear += 1
-      puts "Аналитика по семестру is coming soon..."
-      sleep(1)
-      # some_method
+some_method = proc { puts 'Future functionality' }
 
-    when "2"
-      clear_lines($disciplines_message.size + $extra_lines_to_clear - 1)
-      # Код ниже — временная заглушка
-      $extra_lines_to_clear += 1
-      puts "Аналитика по активным семестрам is coming soon..."
-      sleep(1)
-      # some_method
+ANALYTICS_OPTIONS = {
+  1 => 'Аналитика по семестру',
+  2 => 'Аналитика по активным семстрам',
+  3 => 'Аналитика по всем семстрам',
+  4 => 'Вернуться'
+}.freeze
 
-    when "3"
-      clear_lines($disciplines_message.size + $extra_lines_to_clear - 1)
-      # Код ниже — временная заглушка
-      $extra_lines_to_clear += 1
-      puts "Аналитика по всем семестрам is coming soon..."
-      sleep(1)
-      # some_method
-
-    when "4"
-      clear_lines($disciplines_message.size + $extra_lines_to_clear - 1)
-      break
-    else
-      clear_lines($disciplines_message.size)
-      $extra_lines_to_clear += 1
-      puts "Некорректный ввод!"
-      sleep(1)
-      # Придумать вариант лучше???
-    end
-  end
-end
+ANALYTICS_OPTIONS_MATCH = {
+  1 => some_method,
+  2 => some_method,
+  3 => some_method
+}.freeze

@@ -5,30 +5,23 @@ require_relative 'options'
 require_relative 'matches'
 
 module MenuConfig
-  # Creating instances for each menu section
+  # Displaying menu options
   module Config
-    def self.main_menu
-      @main_menu ||= Menu.new(options: Options::MAIN, matches: Matches::MAIN)
-    end
+    MENU_PRESETS = {
+      main: { options: Options::MAIN, matches: Matches::MAIN },
+      semesters: { options: Options::SEMESTERS, matches: Matches::SEMESTERS },
+      labs: { options: Options::LABS, matches: Matches::LABS },
+      disciplines: { options: Options::DISCIPLINES, matches: Matches::DISCIPLINES },
+      analytics: { options: Options::ANALYTICS, matches: Matches::ANALYTICS },
+      export: { options: Options::EXPORT, matches: Matches::EXPORT }
+    }.freeze
 
-    def self.semesters_menu
-      @semesters_menu ||= Menu.new(options: Options::SEMESTERS, matches: Matches::SEMESTERS)
-    end
+    def self.display_menu(menu_type)
+      @menus ||= {}
+      @menus[menu_type] ||= Menu.new(options: MENU_PRESETS[menu_type][:options],
+                                     matches: MENU_PRESETS[menu_type][:matches])
 
-    def self.labs_menu
-      @labs_menu ||= Menu.new(options: Options::LABS, matches: Matches::LABS)
-    end
-
-    def self.disciplines_menu
-      @disciplines_menu ||= Menu.new(options: Options::DISCIPLINES, matches: Matches::DISCIPLINES)
-    end
-
-    def self.analytics_menu
-      @analytics_menu ||= Menu.new(options: Options::ANALYTICS, matches: Matches::ANALYTICS)
-    end
-
-    def self.export_menu
-      @export_menu ||= Menu.new(options: Options::EXPORT, matches: Matches::EXPORT)
+      @menus[menu_type].display_options
     end
   end
 end

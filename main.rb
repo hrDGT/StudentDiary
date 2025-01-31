@@ -4,4 +4,4 @@ require_relative 'menu_config/config'
 
 puts "[Student Diary]\n[Введите exit для выхода]"
 
-MenuConfig::Config.main_menu.display_options
+MenuConfig::Config.display_menu(:main)

@@ -9,9 +9,8 @@ class Menu
 
   def display_options
     puts 'Выберите необходимый вариант:'
-    @options.each do |key, value|
-      puts "#{key}. #{value}"
-    end
+    @options.each { |key, value| puts "#{key}. #{value}" }
+
     process_user_input
   end
 
@@ -22,11 +21,8 @@ class Menu
     return clear_lines(@options.size + 6) if @user_input == 'exit'
 
     clear_lines(@options.size + 2)
-    if validate_input
-      execute
-    else
-      handle_input_error
-    end
+
+    validate_input ? execute : handle_input_error
   end
 
   def validate_input
@@ -37,6 +33,7 @@ class Menu
     puts 'Ошибка ввода!'
     sleep(1)
     clear_lines(1)
+
     display_options
   end
 

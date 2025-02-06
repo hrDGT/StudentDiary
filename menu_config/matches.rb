@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
+require_relative '../semesters/execution'
+
+
 module MenuConfig
   module Matches
     SEMESTERS = {
-      '1' => -> { puts 'semesters number 1' },
-      '2' => -> { puts 'semesters number 2' },
-      '3' => -> { puts 'semesters number 3' },
-      '4' => -> { Config.display_menu(:main) }
+      '1' => -> { Semesters::Execution.execute(operation: :display) },
+      '2' => -> { Semesters::Execution.execute(operation: :add) },
+      '3' => -> { Semesters::Execution.execute(operation: :edit) },
+      '4' => -> { Semesters::Execution.execute(operation: :delete) },
+      '5' => -> { Config.display_menu(:main) }
     }.freeze
 
     LABS = {

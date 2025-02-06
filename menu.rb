@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'utilities/clear_lines'
+
 # Functionality for all menus
 class Menu
+  include ClearLines
+
   def initialize(options:, matches:)
     @options = options
     @matches = matches
@@ -18,7 +22,7 @@ class Menu
 
   def process_user_input
     @user_input = gets.chomp
-    return clear_lines(@options.size + 6) if @user_input == 'exit'
+    return clear_lines(@options.size + 4 + Semesters::Execution.extra_lines) if @user_input == 'exit'
 
     clear_lines(@options.size + 2)
 
@@ -39,9 +43,5 @@ class Menu
 
   def execute
     @matches[@user_input].call
-  end
-
-  def clear_lines(lines_to_clear)
-    lines_to_clear.times { print "\e[A\e[K" }
   end
 end

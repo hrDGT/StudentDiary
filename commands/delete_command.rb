@@ -4,18 +4,18 @@ require_relative 'command'
 require_relative '../database/database'
 
 module Commands
-  # Delete a record in a table by name
+  # Delete a record in a table by id
   class DeleteCommand < Command
-    def initialize(table:, name:)
-      super
+    def initialize(table:, id:)
+      super()
       @table = table
-      @name = name
+      @id = id
     end
 
     def execute
-      Database::Database.execute_query(
-        "DELETE FROM #{@table} WHERE name = '#{@name}'"
-      )
+      query = "DELETE FROM #{@table} WHERE id = $1"
+
+      Database::Database.instance.execute_query(query: query, values: [@id])
     end
   end
 end

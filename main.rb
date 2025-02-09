@@ -6,6 +6,6 @@ require_relative 'database/database'
 
 puts "[Student Diary]\n[Введите exit для выхода]"
 
-Database::Database.setup
+Database::Database.instance.setup
 
 MenuConfig::Config.display_menu(:main)

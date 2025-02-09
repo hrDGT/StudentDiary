@@ -13,15 +13,17 @@ module Semesters
     @lines_to_clear ||= 0
 
     EXECUTIONS_LIST = {
-      add: -> { Semesters::Add.add },
-      delete: -> { Semesters::Delete.delete },
-      display: -> { Semesters::Display.display },
-      edit: -> { Semesters::Edit.edit }
+      add: -> { AddNewSemesterService.new },
+      delete: -> { DeleteSemesterService.new },
+      display: -> { DisplaySemestersService.new },
+      edit: -> { EditSemesterService.new }
     }.freeze
 
     def self.execute(operation:)
       clear_lines(@lines_to_clear)
-      EXECUTIONS_LIST[operation].call
+      service = EXECUTIONS_LIST[operation].call
+      service.call
+
       MenuConfig::Config.display_menu(:semesters)
     end
 

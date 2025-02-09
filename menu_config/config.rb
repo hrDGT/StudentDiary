@@ -23,9 +23,5 @@ module MenuConfig
 
       @menus[menu_type].display_options
     end
-
-    def self.menu_access(menu_type)
-      @menus[menu_type]
-    end
   end
 end

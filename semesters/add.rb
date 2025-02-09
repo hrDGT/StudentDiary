@@ -2,48 +2,41 @@
 
 require_relative '../commands/add_command'
 require_relative 'execution'
+require_relative 'form'
 
 module Semesters
-  # Specified add command for semesters table
-  module Add
-    def self.add
-      name = input_name
-      start_date = input_start_date
-      end_date = input_end_date
+  # Service class for adding a new semester to the table
+  class AddNewSemesterService
+    def call
+      process_user_input
+      if @form.valid?
+        add_semester
+        Execution.instance_variable_set(:@lines_to_clear, 6)
+      else
+        puts 'Ошибки ввода:'
+        puts @form.errors
 
-      command = Commands::AddCommand.new(table: 'semesters', name: name, start_date: start_date, end_date: end_date)
-      command.execute
-
-      Semesters::Execution.instance_variable_set(:@lines_to_clear, 6)
+        Execution.instance_variable_set(:@lines_to_clear, 7 + @form.errors.size)
+      end
     end
 
-    def self.input_name
-      puts 'Введите название семестра'
-      gets.chomp
-    end
+    private
 
-    def self.input_start_date
+    def process_user_input
+      puts 'Введите название семестра:'
+      name = gets.chomp
       puts 'Введите дату начала семестра (yyyy-mm-dd)'
-      date = gets.chomp
-      until valid_date_format?(date)
-        puts 'Неправильный формат даты. Попробуйте еще раз (yyyy-mm-dd):'
-        date = gets.chomp
-      end
-      date
-    end
-
-    def self.input_end_date
+      start_date = gets.chomp
       puts 'Введите дату окончания семестра (yyyy-mm-dd)'
-      date = gets.chomp
-      until valid_date_format?(date)
-        puts 'Неправильный формат даты. Попробуйте еще раз (yyyy-mm-dd):'
-        date = gets.chomp
-      end
-      date
+      end_date = gets.chomp
+
+      @form = SemestersForm.new(name: name, start_date: start_date, end_date: end_date)
     end
 
-    def self.valid_date_format?(date)
-      date.match(/\d{4}-\d{2}-\d{2}/)
+    def add_semester
+      command = Commands::AddCommand.new(table: 'semesters', name: @form.name, start_date: @form.start_date,
+                                         end_date: @form.end_date)
+      command.execute
     end
   end
 end

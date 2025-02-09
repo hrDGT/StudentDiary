@@ -4,66 +4,64 @@ require_relative '../commands/edit_command'
 require_relative 'execution'
 
 module Semesters
-  # Specified edit command for semesters table
-  module Edit
-    def self.edit
-      old_name = input_old_name
-      new_name = input_new_name
-      new_start_date = input_new_start_date
-      new_end_date = input_new_end_date
+  # Service class for editing a semester from the table
+  class EditSemesterService
+    def call
+      process_old_name_input
 
-      updates = create_updates_hash(new_name, new_start_date, new_end_date)
-
-      update_semester_in_database(updates, old_name)
-
-      Semesters::Execution.instance_variable_set(:@lines_to_clear, 8)
+      semester_exists? ? handle_form_validation : handle_missing_semester
     end
 
-    def self.input_old_name
-      puts 'Введите название изменяемого семестра'
-      gets.chomp
+    private
+
+    def process_old_name_input
+      puts 'Введите id изменяемого семестра'
+      @id = gets.chomp
     end
 
-    def self.input_new_name
-      puts 'Введите новое название семестра'
-      gets.chomp
-    end
-
-    def self.input_new_start_date
+    def process_new_data_input
+      puts 'Введите новое название семестра:'
+      new_name = gets.chomp
       puts 'Введите новую дату начала семестра (yyyy-mm-dd)'
-      date = gets.chomp
-      until valid_date_format?(date)
-        puts 'Неправильный формат даты. Попробуйте еще раз (yyyy-mm-dd):'
-        date = gets.chomp
-      end
-      date
-    end
-
-    def self.input_new_end_date
+      start_date = gets.chomp
       puts 'Введите новую дату окончания семестра (yyyy-mm-dd)'
-      date = gets.chomp
-      until valid_date_format?(date)
-        puts 'Неправильный формат даты. Попробуйте еще раз (yyyy-mm-dd):'
-        date = gets.chomp
+      end_date = gets.chomp
+
+      @form = SemestersForm.new(name: new_name, start_date: start_date, end_date: end_date)
+    end
+
+    def semester_exists?
+      Database::Database.instance.execute_query(query: "SELECT 1 FROM semesters WHERE id = $1", values: [@id]).any?
+    end
+
+    def handle_form_validation
+      process_new_data_input
+      if @form.valid?
+        edit_semester
+
+        Execution.instance_variable_set(:@lines_to_clear, 8)
+      else
+        puts 'Ошибки ввода:'
+        puts @form.errors
+
+        Execution.instance_variable_set(:@lines_to_clear, 9 + @form.errors.size)
       end
-      date
     end
 
-    def self.create_updates_hash(new_name, new_start_date, new_end_date)
-      {
-        'name' => new_name,
-        'start_date' => new_start_date,
-        'end_date' => new_end_date
-      }
+    def handle_missing_semester
+      puts 'Семестра с указанным названием не существует'
+
+      Execution.instance_variable_set(:@lines_to_clear, 3)
     end
 
-    def self.update_semester_in_database(updates, old_name)
-      command = Commands::EditCommand.new(table: 'semesters', updates: updates, name: old_name)
+    def edit_semester
+      command = Commands::EditCommand.new(table: 'semesters', id: @id, updates: {
+                                            name: @form.name,
+                                            start_date: @form.start_date,
+                                            end_date: @form.end_date
+                                          })
+
       command.execute
-    end
-
-    def self.valid_date_format?(date)
-      date.match(/\d{4}-\d{2}-\d{2}/)
     end
   end
 end

@@ -31,7 +31,7 @@ module Semesters
     end
 
     def semester_exists?
-      Database::Database.instance.execute_query(query: "SELECT 1 FROM semesters WHERE id = $1", values: [@id]).any?
+      Database::Database.instance.execute_query(query: 'SELECT 1 FROM semesters WHERE id = $1', values: [@id]).any?
     end
 
     def handle_form_validation
@@ -55,13 +55,11 @@ module Semesters
     end
 
     def edit_semester
-      command = Commands::EditCommand.new(table: 'semesters', id: @id, updates: {
-                                            name: @form.name,
-                                            start_date: @form.start_date,
-                                            end_date: @form.end_date
-                                          })
-
-      command.execute
+      Commands::EditCommand.new(
+        table: 'semesters',
+        id: @id,
+        updates: { name: @form.name, start_date: @form.start_date, end_date: @form.end_date }
+      ).execute
     end
   end
 end

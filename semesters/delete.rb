@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../commands/delete_command'
+require_relative '../queries/if_semester_exists'
 require_relative 'execution'
 
 module Semesters
@@ -8,9 +9,9 @@ module Semesters
   class DeleteSemesterService
     def call
       process_user_input
-      delete_semester
+      Queries::IfSemesterExists.new.execute(id: @id) ? delete_semester : handle_existence_error
 
-      Execution.instance_variable_set(:@lines_to_clear, 2)
+      Execution.instance_variable_set(:@lines_to_clear, 3)
     end
 
     private
@@ -21,8 +22,12 @@ module Semesters
     end
 
     def delete_semester
-      command = Commands::DeleteCommand.new(table: 'semesters', id: @id)
-      command.execute
+      Commands::DeleteCommand.new(table: 'semesters', id: @id).execute
+      puts 'Семестр успешно удален'
+    end
+
+    def handle_existence_error
+      puts 'Указанный семестр не найден'
     end
   end
 end

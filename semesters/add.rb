@@ -34,9 +34,12 @@ module Semesters
     end
 
     def add_semester
-      command = Commands::AddCommand.new(table: 'semesters', name: @form.name, start_date: @form.start_date,
-                                         end_date: @form.end_date)
-      command.execute
+      Commands::AddCommand.new(
+        table: 'semesters',
+        name: @form.name,
+        start_date: @form.start_date,
+        end_date: @form.end_date
+      ).execute
     end
   end
 end

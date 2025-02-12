@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 require_relative '../commands/edit_command'
+require_relative '../queries/semesters_query'
 require_relative 'execution'
 
 module Semesters
   # Service class for editing a semester from the table
   class EditSemesterService
     def call
-      process_old_name_input
-
-      semester_exists? ? handle_form_validation : handle_missing_semester
+      semester_exists?(id: process_old_name_input) ? handle_form_validation : handle_missing_semester
     end
 
     private
@@ -30,8 +29,8 @@ module Semesters
       @form = SemestersForm.new(name: new_name, start_date: start_date, end_date: end_date)
     end
 
-    def semester_exists?
-      Database::Database.instance.execute_query(query: 'SELECT 1 FROM semesters WHERE id = $1', values: [@id]).any?
+    def semester_exists?(id:)
+      Queries::SemestersQuery.new.exists?(id: id)
     end
 
     def handle_form_validation

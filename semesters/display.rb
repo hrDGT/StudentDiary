@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../queries/display_query'
+require_relative '../queries/semesters_query'
 require_relative 'execution'
 
 module Semesters
@@ -13,7 +13,7 @@ module Semesters
     private
 
     def display_semesters
-      Queries::DisplayQuery.new(table: 'semesters').execute.ntuples
+      Queries::SemestersQuery.new.display_list.ntuples
     end
   end
 end

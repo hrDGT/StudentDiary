@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../commands/delete_command'
-require_relative '../queries/if_semester_exists'
+require_relative '../queries/semesters_query'
 require_relative 'execution'
 
 module Semesters
@@ -9,7 +9,7 @@ module Semesters
   class DeleteSemesterService
     def call
       process_user_input
-      Queries::IfSemesterExists.new.execute(id: @id) ? delete_semester : handle_existence_error
+      Queries::SemestersQuery.new.exists?(id: @id) ? delete_semester : handle_existence_error
 
       Execution.instance_variable_set(:@lines_to_clear, 3)
     end

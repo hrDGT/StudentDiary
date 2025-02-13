@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-require_relative '../queries/semesters_query'
+require_relative '../queries/disciplines_query'
 require_relative 'form'
 require_relative 'add'
 require_relative 'delete'
 require_relative 'display'
 require_relative 'edit'
 
-module Semesters
-  # Executing specified commands for semesters table
+module Disciplines
+  # Executing specified commands for disciplines table
   module Execution
     EXECUTIONS_LIST = {
-      add: -> { AddNewSemesterService.new },
-      delete: -> { DeleteSemesterService.new },
-      display: -> { DisplaySemestersService.new },
-      edit: -> { EditSemesterService.new }
+      add: -> { AddNewDisciplineService.new },
+      delete: -> { DeleteDisciplineService.new },
+      display: -> { DisplayDisciplinesService.new },
+      edit: -> { EditDisciplineService.new }
     }.freeze
 
     def self.execute(operation:)
@@ -22,7 +22,7 @@ module Semesters
       service = EXECUTIONS_LIST[operation].call
       service.call
 
-      MenuConfig::Config.display_menu(:semesters)
+      MenuConfig::Config.display_menu(:disciplines)
     end
   end
 end

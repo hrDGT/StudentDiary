@@ -11,3 +11,16 @@ EXCEPTION
     WHEN duplicate_table THEN
 END 
 $do$;
+
+DO 
+$do$
+BEGIN
+    CREATE TABLE disciplines (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(50) NOT NULL,
+        semester_id integer REFERENCES semesters(id) ON DELETE CASCADE
+    );
+EXCEPTION
+    WHEN duplicate_table THEN
+END 
+$do$;

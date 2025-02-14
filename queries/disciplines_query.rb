@@ -4,11 +4,14 @@ module Queries
   # Disiplines-related queries
   class DisciplinesQuery
     def display_list
-      result = Database::Database.instance.execute_query(query:
-      "SELECT disciplines.id, CONCAT(disciplines.name, ' — ', semesters.id), semesters.name " \
-      'FROM disciplines ' \
-      'JOIN semesters ' \
-      'ON disciplines.semester_id = semesters.id')
+      result = Database::Database.instance.execute_query(
+        query: <<-SQL
+          SELECT
+            disciplines.id, CONCAT(disciplines.name, ' — ', semesters.id), semesters.name
+          FROM
+            disciplines JOIN semesters ON disciplines.semester_id = semesters.id
+        SQL
+      )
 
       result.each { |row| puts row.values.join(' ') }
     end

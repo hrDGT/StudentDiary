@@ -21,7 +21,7 @@ module Disciplines
 
     def delete_discipline
       Commands::DeleteCommand.new(table: 'disciplines', id: @id).execute
-      puts 'Семестр успешно удален'
+      puts 'Дисциплина успешно удалена'
     end
 
     def handle_existence_error

@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
-require_relative '../semesters/execution'
-require_relative '../disciplines/execution'
+require_relative '../semesters/semesters_execution'
+require_relative '../disciplines/disciplines_execution'
 
 module MenuConfig
   module Matches
     SEMESTERS = {
-      '1' => -> { Semesters::Execution.execute(operation: :display) },
-      '2' => -> { Semesters::Execution.execute(operation: :add) },
-      '3' => -> { Semesters::Execution.execute(operation: :edit) },
-      '4' => -> { Semesters::Execution.execute(operation: :delete) },
+      '1' => -> { Semesters::SemestersExecution.execute(operation: :display) },
+      '2' => -> { Semesters::SemestersExecution.execute(operation: :add) },
+      '3' => -> { Semesters::SemestersExecution.execute(operation: :edit) },
+      '4' => -> { Semesters::SemestersExecution.execute(operation: :delete) },
       '5' => -> { Config.display_menu(:main) }
     }.freeze
 
     DISCIPLINES = {
-      '1' => -> { Disciplines::Execution.execute(operation: :display) },
-      '2' => -> { Disciplines::Execution.execute(operation: :add) },
-      '3' => -> { Disciplines::Execution.execute(operation: :edit) },
-      '4' => -> { Disciplines::Execution.execute(operation: :delete) },
+      '1' => -> { Disciplines::DisciplinesExecution.execute(operation: :display) },
+      '2' => -> { Disciplines::DisciplinesExecution.execute(operation: :add) },
+      '3' => -> { Disciplines::DisciplinesExecution.execute(operation: :edit) },
+      '4' => -> { Disciplines::DisciplinesExecution.execute(operation: :delete) },
       '5' => -> { Config.display_menu(:main) }
     }.freeze
 

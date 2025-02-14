@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require_relative '../queries/semesters_query'
-require_relative 'form'
-require_relative 'add'
-require_relative 'delete'
-require_relative 'display'
-require_relative 'edit'
+require_relative 'semesters_form'
+require_relative 'add_new_semester_service'
+require_relative 'delete_semester_service'
+require_relative 'display_semesters_service'
+require_relative 'edit_semester_service'
 
 module Semesters
   # Executing specified commands for semesters table
-  module Execution
+  module SemestersExecution
     EXECUTIONS_LIST = {
       add: -> { AddNewSemesterService.new },
       delete: -> { DeleteSemesterService.new },

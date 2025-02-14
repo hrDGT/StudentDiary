@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require_relative '../queries/disciplines_query'
-require_relative 'form'
-require_relative 'add'
-require_relative 'delete'
-require_relative 'display'
-require_relative 'edit'
+require_relative 'disciplines_form'
+require_relative 'add_new_discipline_service'
+require_relative 'delete_discipline_service'
+require_relative 'display_disciplines_service'
+require_relative 'edit_discipline_service'
 
 module Disciplines
   # Executing specified commands for disciplines table
-  module Execution
+  module DisciplinesExecution
     EXECUTIONS_LIST = {
       add: -> { AddNewDisciplineService.new },
       delete: -> { DeleteDisciplineService.new },

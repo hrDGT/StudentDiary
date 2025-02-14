@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'command'
-require_relative '../database/database'
 
 module Commands
   # Add a record to a table

@@ -1,25 +1,23 @@
 # frozen_string_literal: true
 
 require_relative '../commands/edit_command'
-require_relative '../queries/semesters_query'
-require_relative 'execution'
 
 module Semesters
   # Service class for editing a semester from the table
   class EditSemesterService
     def call
-      semester_exists?(id: process_old_name_input) ? handle_form_validation : handle_missing_semester
+      semester_exists?(id: process_id_input) ? handle_form_validation : handle_missing_semester
     end
 
     private
 
-    def process_old_name_input
+    def process_id_input
       puts 'Введите id изменяемого семестра'
       @id = gets.chomp
     end
 
     def process_new_data_input
-      puts 'Введите новое название семестра:'
+      puts 'Введите новое название семестра'
       new_name = gets.chomp
       puts 'Введите новую дату начала семестра (yyyy-mm-dd)'
       start_date = gets.chomp
@@ -38,19 +36,19 @@ module Semesters
       if @form.valid?
         edit_semester
 
-        Execution.instance_variable_set(:@lines_to_clear, 8)
+        Utilities::LinesCleaner.instance.lines_to_clear += 8
       else
         puts 'Ошибки ввода:'
         puts @form.errors
 
-        Execution.instance_variable_set(:@lines_to_clear, 9 + @form.errors.size)
+        Utilities::LinesCleaner.instance.lines_to_clear += 9 + @form.errors.size
       end
     end
 
     def handle_missing_semester
       puts 'Семестра с указанным названием не существует'
 
-      Execution.instance_variable_set(:@lines_to_clear, 3)
+      Utilities::LinesCleaner.instance.lines_to_clear += 3
     end
 
     def edit_semester

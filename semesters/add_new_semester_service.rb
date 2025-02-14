@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../commands/add_command'
-require_relative 'execution'
-require_relative 'form'
 
 module Semesters
   # Service class for adding a new semester to the table
@@ -11,19 +9,19 @@ module Semesters
       process_user_input
       if @form.valid?
         add_semester
-        Execution.instance_variable_set(:@lines_to_clear, 6)
+        Utilities::LinesCleaner.instance.lines_to_clear += 6
       else
         puts 'Ошибки ввода:'
         puts @form.errors
 
-        Execution.instance_variable_set(:@lines_to_clear, 7 + @form.errors.size)
+        Utilities::LinesCleaner.instance.lines_to_clear += 7 + @form.errors.size
       end
     end
 
     private
 
     def process_user_input
-      puts 'Введите название семестра:'
+      puts 'Введите название семестра'
       name = gets.chomp
       puts 'Введите дату начала семестра (yyyy-mm-dd)'
       start_date = gets.chomp

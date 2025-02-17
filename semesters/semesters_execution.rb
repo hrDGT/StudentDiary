@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
-require_relative 'add'
-require_relative 'delete'
-require_relative 'display'
-require_relative 'edit'
-require_relative '../utilities/clear_lines'
+require_relative '../queries/semesters_query'
+require_relative 'semesters_form'
+require_relative 'add_new_semester_service'
+require_relative 'delete_semester_service'
+require_relative 'display_semesters_service'
+require_relative 'edit_semester_service'
 
 module Semesters
   # Executing specified commands for semesters table
-  module Execution
-    extend ClearLines
-    @lines_to_clear ||= 0
-
+  module SemestersExecution
     EXECUTIONS_LIST = {
       add: -> { AddNewSemesterService.new },
       delete: -> { DeleteSemesterService.new },
@@ -20,15 +18,11 @@ module Semesters
     }.freeze
 
     def self.execute(operation:)
-      clear_lines(@lines_to_clear)
+      Utilities::LinesCleaner.instance.clear_lines(quantity: 0)
       service = EXECUTIONS_LIST[operation].call
       service.call
 
       MenuConfig::Config.display_menu(:semesters)
-    end
-
-    def self.extra_lines
-      @lines_to_clear
     end
   end
 end

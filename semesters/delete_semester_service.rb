@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../commands/delete_command'
-require_relative '../queries/semesters_query'
-require_relative 'execution'
 
 module Semesters
   # Service class for deleting a semester from the table
@@ -11,7 +9,7 @@ module Semesters
       process_user_input
       Queries::SemestersQuery.new.exists?(id: @id) ? delete_semester : handle_existence_error
 
-      Execution.instance_variable_set(:@lines_to_clear, 3)
+      Utilities::LinesCleaner.instance.lines_to_clear += 3
     end
 
     private

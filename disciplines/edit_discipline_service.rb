@@ -6,7 +6,7 @@ module Disciplines
   # Service class for editing a discipline from the table
   class EditDisciplineService
     def call
-      discipline_exists?(id: process_id_input) ? handle_form_validation : handle_missing_semester
+      discipline_exists?(id: process_id_input) ? handle_form_validation : handle_missing_discipline
     end
 
     private
@@ -43,7 +43,7 @@ module Disciplines
       end
     end
 
-    def handle_missing_semester
+    def handle_missing_discipline
       puts 'Дисциплины с указанным названием не существует'
 
       Utilities::LinesCleaner.instance.lines_to_clear += 3

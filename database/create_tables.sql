@@ -25,3 +25,20 @@ EXCEPTION
     WHEN duplicate_table THEN
 END 
 $do$;
+
+DO 
+$do$
+BEGIN
+    CREATE TABLE labs (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(50) NOT NULL,
+        deadline DATE NOT NULL,
+        status VARCHAR(13) NOT NULL,
+        grade INTEGER,
+        discipline_id INTEGER,
+        FOREIGN KEY (discipline_id) REFERENCES disciplines(id) ON DELETE CASCADE
+    );
+EXCEPTION
+    WHEN duplicate_table THEN
+END 
+$do$;

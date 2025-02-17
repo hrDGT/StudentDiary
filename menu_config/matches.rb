@@ -2,6 +2,7 @@
 
 require_relative '../semesters/semesters_execution'
 require_relative '../disciplines/disciplines_execution'
+require_relative '../labs/labs_execution'
 
 module MenuConfig
   module Matches
@@ -22,10 +23,11 @@ module MenuConfig
     }.freeze
 
     LABS = {
-      '1' => -> { puts 'labs number 1' },
-      '2' => -> { puts 'labs number 2' },
-      '3' => -> { puts 'labs number 3' },
-      '4' => -> { Config.display_menu(:main) }
+      '1' => -> { Labs::LabsExecution.execute(operation: :display) },
+      '2' => -> { Labs::LabsExecution.execute(operation: :add) },
+      '3' => -> { Labs::LabsExecution.execute(operation: :edit) },
+      '4' => -> { Labs::LabsExecution.execute(operation: :delete) },
+      '5' => -> { Config.display_menu(:main) }
     }.freeze
 
     ANALYTICS = {

@@ -25,6 +25,10 @@ module Disciplines
     end
 
     def validate_semester_id
+      @semester_id == '' ? errors << 'Пустой id семестра' : validate_semester_existence
+    end
+
+    def validate_semester_existence
       errors << 'Указанного семестра не существует' unless Queries::SemestersQuery.new.exists?(id: @semester_id)
     end
   end

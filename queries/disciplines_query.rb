@@ -20,5 +20,16 @@ module Queries
       Database::Database.instance.execute_query(query: 'SELECT * FROM disciplines WHERE id = $1',
                                                 values: [id]).ntuples.positive?
     end
+
+    def ids_by_semester_id(semester_id:)
+      Database::Database.instance.execute_query(query: 'SELECT id FROM disciplines WHERE semester_id = $1',
+                                                values: [semester_id]).values
+    end
+
+    def name(id:)
+      Database::Database.instance.execute_query(
+        query: 'SELECT name FROM disciplines WHERE id = $1', values: [id]
+      ).getvalue(0, 0)
+    end
   end
 end

@@ -13,6 +13,9 @@ module MenuConfig
       labs: { options: Options::LABS, matches: Matches::LABS },
       disciplines: { options: Options::DISCIPLINES, matches: Matches::DISCIPLINES },
       analytics: { options: Options::ANALYTICS, matches: Matches::ANALYTICS },
+      analytics_specific: { options: Options::ANALYTICS_DETAILS, matches: Matches::ANALYTICS_SPECIFIC },
+      analytics_active: { options: Options::ANALYTICS_DETAILS, matches: Matches::ANALYTICS_ACTIVE },
+      analytics_completed: { options: Options::ANALYTICS_DETAILS_COMPLETED, matches: Matches::ANALYTICS_COMPLETED },
       export: { options: Options::EXPORT, matches: Matches::EXPORT }
     }.freeze
 

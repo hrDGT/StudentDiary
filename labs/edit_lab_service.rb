@@ -34,7 +34,7 @@ module Labs
     end
 
     def lab_exists?(id:)
-      Queries::LabsQuery.new.exists?(id: id)
+      Queries::LabsQuery.new(id: id).exists?
     end
 
     def handle_form_validation

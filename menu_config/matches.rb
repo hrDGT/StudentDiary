@@ -3,6 +3,7 @@
 require_relative '../semesters/semesters_execution'
 require_relative '../disciplines/disciplines_execution'
 require_relative '../labs/labs_execution'
+require_relative '../analytics/analytics_execution'
 
 module MenuConfig
   module Matches
@@ -31,10 +32,30 @@ module MenuConfig
     }.freeze
 
     ANALYTICS = {
-      '1' => -> { puts 'analytics number 1' },
-      '2' => -> { puts 'analytics number 2' },
-      '3' => -> { puts 'analytics number 3' },
+      '1' => -> { Config.display_menu(:analytics_specific) },
+      '2' => -> { Config.display_menu(:analytics_active) },
+      '3' => -> { Config.display_menu(:analytics_completed) },
       '4' => -> { Config.display_menu(:main) }
+    }.freeze
+
+    ANALYTICS_SPECIFIC = {
+      '1' => -> { Analytics::AnalyticsExecution.execute(operation: :specific_grades) },
+      '2' => -> { Analytics::AnalyticsExecution.execute(operation: :specific_uncompleted) },
+      '3' => -> { Analytics::AnalyticsExecution.execute(operation: :specific_full) },
+      '4' => -> { Config.display_menu(:analytics) }
+    }.freeze
+
+    ANALYTICS_ACTIVE = {
+      '1' => -> { Analytics::AnalyticsExecution.execute(operation: :active_grades) },
+      '2' => -> { Analytics::AnalyticsExecution.execute(operation: :active_uncompleted) },
+      '3' => -> { Analytics::AnalyticsExecution.execute(operation: :active_full) },
+      '4' => -> { Config.display_menu(:analytics) }
+    }.freeze
+
+    ANALYTICS_COMPLETED = {
+      '1' => -> { Analytics::AnalyticsExecution.execute(operation: :completed_grades) },
+      '2' => -> { Analytics::AnalyticsExecution.execute(operation: :completed_full) },
+      '3' => -> { Config.display_menu(:analytics) }
     }.freeze
 
     EXPORT = {

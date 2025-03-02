@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Analytics
-  # Validate analytics related date
+  # Validate analytics related data
   class AnalyticsForm
     attr_accessor :id, :errors
 

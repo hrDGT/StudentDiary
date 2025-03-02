@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Labs
-  # Validate lab related date
+  # Validate lab related data
   class LabsForm
     attr_accessor :name, :deadline, :status, :grade, :discipline_id, :errors
 

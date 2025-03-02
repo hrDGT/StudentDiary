@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Disciplines
-  # Validate semester related date
+  # Validate semester related data
   class DisciplinesForm
     attr_accessor :name, :semester_id, :errors
 

@@ -4,6 +4,7 @@ require_relative '../semesters/semesters_execution'
 require_relative '../disciplines/disciplines_execution'
 require_relative '../labs/labs_execution'
 require_relative '../analytics/analytics_execution'
+require_relative '../export/export_execution'
 
 module MenuConfig
   module Matches
@@ -59,7 +60,7 @@ module MenuConfig
     }.freeze
 
     EXPORT = {
-      '1' => -> { puts 'export number 1' },
+      '1' => -> { Export::ExportExecution.execute },
       '2' => -> { Config.display_menu(:main) }
     }.freeze
 

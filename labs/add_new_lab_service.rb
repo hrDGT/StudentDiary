@@ -9,6 +9,7 @@ module Labs
       process_user_input
       if @form.valid?
         add_lab
+
         Utilities::LinesCleaner.instance.lines_to_clear += 10
       else
         puts 'Ошибки ввода:'

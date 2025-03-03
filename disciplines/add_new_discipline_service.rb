@@ -9,6 +9,7 @@ module Disciplines
       process_user_input
       if @form.valid?
         add_discipline
+
         Utilities::LinesCleaner.instance.lines_to_clear += 4
       else
         puts 'Ошибки ввода:'

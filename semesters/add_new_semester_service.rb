@@ -9,6 +9,7 @@ module Semesters
       process_user_input
       if @form.valid?
         add_semester
+
         Utilities::LinesCleaner.instance.lines_to_clear += 6
       else
         puts 'Ошибки ввода:'

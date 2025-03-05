@@ -6,7 +6,7 @@ module Labs
   # Service class for editing a lab from the table
   class EditLabService
     def call
-      lab_exists?(id: process_id_input) ? handle_form_validation : handle_missing_lab
+      Lab.new(id: process_id_input).exists? ? handle_form_validation : handle_missing_lab
     end
 
     private
@@ -18,7 +18,7 @@ module Labs
 
     def process_new_data_input
       new_name = request_data_form_user(message: 'Введите новое название лабы')
-      new_deadline = request_data_form_user(message: 'Введите новый дедлайн лабы')
+      new_deadline = request_data_form_user(message: 'Введите новый дедлайн лабы (yyyy-mm-dd)')
       new_status = request_data_form_user(message: 'Введите новый статус лабы (completed/not completed)')
       new_grade = request_data_form_user(message: 'Введите новую отметку за лабу (оставьте пустым, если неизвестна)')
       new_discipline_id = request_data_form_user(message: 'Введите новый id дисциплины, к которой относится лаба')
@@ -31,10 +31,6 @@ module Labs
       puts message
 
       gets.chomp
-    end
-
-    def lab_exists?(id:)
-      Queries::LabsQuery.new(id: id).exists?
     end
 
     def handle_form_validation
@@ -52,7 +48,7 @@ module Labs
     end
 
     def handle_missing_lab
-      puts 'Дисциплины с указанным названием не существует'
+      puts 'Лабы с указанным id не существует'
 
       Utilities::LinesCleaner.instance.lines_to_clear += 3
     end

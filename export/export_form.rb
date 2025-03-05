@@ -23,7 +23,7 @@ module Export
     TABLES_NAMES = %w[semesters disciplines labs].freeze
 
     def validate_directory
-      errors << 'Неправильный формат директории' if !@dir.match?(%r{^[a-zA-Z]:/}) && @dir != '../studentdiary'
+      errors << 'Неправильная директория' unless Dir.exist?(File.dirname(@dir))
     end
 
     def validate_table

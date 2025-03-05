@@ -38,9 +38,9 @@ module Queries
     def not_completed_lab_works(id:)
       Database::Database.instance.execute_query(
         query: <<-SQL,
-          SELECT#{' '}
+          SELECT
             labs.id
-          FROM#{' '}
+          FROM
             labs JOIN disciplines ON labs.discipline_id = disciplines.id JOIN semesters ON disciplines.semester_id = semesters.id
           WHERE semesters.id = $1 AND labs.status = 'not completed'
         SQL
@@ -61,9 +61,24 @@ module Queries
       end
     end
 
-    def discipline_ids_by_id(id:)
-      Database::Database.instance.execute_query(query: 'SELECT id FROM disciplines WHERE semester_id = $1',
-                                                values: [id]).values.flatten
+    class << self
+      def discipline_ids_by_id(id:)
+        Database::Database.instance.execute_query(query: 'SELECT id FROM disciplines WHERE semester_id = $1',
+                                                  values: [id]).values.flatten
+      end
+
+      def all_grades(id:)
+        Database::Database.instance.execute_query(
+          query: <<-SQL,
+            SELECT
+              labs.grade
+            FROM
+              labs JOIN disciplines ON labs.discipline_id = disciplines.id JOIN semesters ON disciplines.semester_id = semesters.id
+            WHERE semesters.id = $1 AND labs.grade IS NOT NULL
+          SQL
+          values: [id]
+        ).values.flatten.map(&:to_i)
+      end
     end
   end
 end

@@ -16,9 +16,10 @@ module Commands
       values_placeholders = @params.keys.map { |key| "$#{@params.keys.index(key) + 1}" }.join(', ')
       values = @params.values
 
-      query = "INSERT INTO #{@table} (#{columns}) VALUES (#{values_placeholders})"
-
-      Database::Database.instance.execute_query(query: query, values: values)
+      Database::Database.instance.execute_query(
+        query: "INSERT INTO #{@table} (#{columns}) VALUES (#{values_placeholders})",
+        values: values
+      )
     end
   end
 end

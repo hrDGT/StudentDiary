@@ -46,8 +46,7 @@ module Database
     end
 
     def create_tables
-      sql = File.read(File.join(File.dirname(__FILE__), 'create_tables.sql'))
-      @connection.exec(sql)
+      @connection.exec(File.read(File.join(File.dirname(__FILE__), 'create_tables.sql')))
     end
   end
 end

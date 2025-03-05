@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+
+require_relative '../discipline'
+require_relative '../semester'
 require_relative '../queries/disciplines_query'
 require_relative 'disciplines_form'
 require_relative 'add_new_discipline_service'
@@ -18,7 +21,7 @@ module Disciplines
     }.freeze
 
     def self.execute(operation:)
-      Utilities::LinesCleaner.instance.clear_lines(quantity: 0)
+      Utilities::LinesCleaner.instance.clear_lines
       service = EXECUTIONS_LIST[operation].call
       service.call
 

@@ -7,7 +7,7 @@ module Disciplines
   class DeleteDisciplineService
     def call
       process_user_input
-      Queries::DisciplinesQuery.new.exists?(id: @id) ? delete_discipline : handle_existence_error
+      Discipline.new(id: @id).exists? ? delete_discipline : handle_existence_error
 
       Utilities::LinesCleaner.instance.lines_to_clear += 3
     end
@@ -21,6 +21,7 @@ module Disciplines
 
     def delete_discipline
       Commands::DeleteCommand.new(table: 'disciplines', id: @id).execute
+
       puts 'Дисциплина успешно удалена'
     end
 

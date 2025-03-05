@@ -18,9 +18,9 @@ class Menu
 
   def process_user_input
     @user_input = gets.chomp
-    return Utilities::LinesCleaner.instance.clear_lines(quantity: @options.size + 4) if @user_input == 'exit'
+    return Utilities::LinesCleaner.instance.clear_lines(extra: @options.size + 4) if @user_input.downcase == 'exit'
 
-    Utilities::LinesCleaner.instance.clear_lines(quantity: @options.size + 2)
+    Utilities::LinesCleaner.instance.clear_lines(extra: @options.size + 2)
 
     validate_input ? execute : handle_input_error
   end
@@ -32,7 +32,7 @@ class Menu
   def handle_input_error
     puts 'Ошибка ввода!'
     sleep(1)
-    Utilities::LinesCleaner.instance.clear_lines(quantity: 1)
+    Utilities::LinesCleaner.instance.clear_lines(extra: 1)
 
     display_options
   end

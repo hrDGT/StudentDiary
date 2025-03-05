@@ -12,9 +12,7 @@ module Commands
     end
 
     def execute
-      query = "DELETE FROM #{@table} WHERE id = $1"
-
-      Database::Database.instance.execute_query(query: query, values: [@id])
+      Database::Database.instance.execute_query(query: "DELETE FROM #{@table} WHERE id = $1", values: [@id])
     end
   end
 end

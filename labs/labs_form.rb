@@ -45,11 +45,7 @@ module Labs
     end
 
     def validate_discipline_id
-      @discipline_id == '' ? (errors << 'Пустой id дисциплины') : validate_discipline_existence
-    end
-
-    def validate_discipline_existence
-      errors << 'Указанной дисциплины не существует' unless Queries::DisciplinesQuery.new.exists?(id: @discipline_id)
+      errors << 'Указанной дисциплины не существует' unless Discipline.new(id: @discipline_id).exists?
     end
 
     def valid_date_format?(date)

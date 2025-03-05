@@ -17,8 +17,8 @@ module Utilities
       attr_reader :instance
     end
 
-    def clear_lines(quantity:)
-      (quantity + @lines_to_clear).times { print "\e[A\e[K" }
+    def clear_lines(extra: 0)
+      (extra + @lines_to_clear).times { print "\e[A\e[K" }
       @lines_to_clear = 0
     end
   end

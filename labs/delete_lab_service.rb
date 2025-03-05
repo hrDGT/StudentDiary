@@ -7,7 +7,7 @@ module Labs
   class DeleteLabService
     def call
       process_user_input
-      Queries::LabsQuery.new.exists?(id: @id) ? delete_lab : handle_existence_error
+      Lab.new(id: @id).exists? ? delete_lab : handle_existence_error
 
       Utilities::LinesCleaner.instance.lines_to_clear += 3
     end

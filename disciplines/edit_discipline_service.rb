@@ -6,7 +6,7 @@ module Disciplines
   # Service class for editing a discipline from the table
   class EditDisciplineService
     def call
-      discipline_exists?(id: process_id_input) ? handle_form_validation : handle_missing_discipline
+      Discipline.new(id: process_id_input).exists? ? handle_form_validation : handle_missing_discipline
     end
 
     private
@@ -25,10 +25,6 @@ module Disciplines
       @form = DisciplinesForm.new(name: new_name, semester_id: new_semester_id)
     end
 
-    def discipline_exists?(id:)
-      Queries::DisciplinesQuery.new.exists?(id: id)
-    end
-
     def handle_form_validation
       process_new_data_input
       if @form.valid?
@@ -44,7 +40,7 @@ module Disciplines
     end
 
     def handle_missing_discipline
-      puts 'Дисциплины с указанным названием не существует'
+      puts 'Дисциплины с указанным id не существует'
 
       Utilities::LinesCleaner.instance.lines_to_clear += 3
     end

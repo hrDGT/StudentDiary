@@ -3,7 +3,7 @@
 module Analytics
   # Service class to get analytics for completed semesters
   class CompletedSemestersAnalyticsService
-    include AnalyticsProcess
+    include AnalyticsPrint
     include AnalyticsCalculations
     include AnalyticsOperations
 

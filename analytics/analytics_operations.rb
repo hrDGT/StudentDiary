@@ -21,8 +21,9 @@ module Analytics
       print_overall_average_grade(id: id)
       print_total_lab_works_number(id: id)
       print_completed_lab_works_percentage(id: id)
+      puts '/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\'
 
-      Utilities::LinesCleaner.instance.lines_to_clear += 1
+      Utilities::LinesCleaner.instance.lines_to_clear += 2
     end
   end
 end

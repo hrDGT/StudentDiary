@@ -6,7 +6,7 @@ require_relative '../queries/labs_query'
 require_relative '../semester'
 require_relative '../lab'
 require_relative '../discipline'
-require_relative 'analytics_process'
+require_relative 'analytics_print'
 require_relative 'analytics_calculations'
 require_relative 'analytics_operations'
 require_relative 'analytics_form'
@@ -29,7 +29,7 @@ module Analytics
     }.freeze
 
     def self.execute(operation:)
-      Utilities::LinesCleaner.instance.clear_lines(quantity: 0)
+      Utilities::LinesCleaner.instance.clear_lines
       EXECUTIONS_LIST[operation].call
 
       MenuConfig::Config.display_menu(:analytics)

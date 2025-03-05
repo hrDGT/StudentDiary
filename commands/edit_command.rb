@@ -16,9 +16,10 @@ module Commands
       updates_set = @updates.keys.each_with_index.map { |column, index| "#{column} = $#{index + 1}" }.join(', ')
       values = @updates.values << @id
 
-      query = "UPDATE #{@table} SET #{updates_set} WHERE id = $#{values.size}"
-
-      Database::Database.instance.execute_query(query: query, values: values)
+      Database::Database.instance.execute_query(
+        query: "UPDATE #{@table} SET #{updates_set} WHERE id = $#{values.size}",
+        values: values
+      )
     end
   end
 end

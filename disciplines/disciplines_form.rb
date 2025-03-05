@@ -14,6 +14,7 @@ module Disciplines
     def valid?
       validate_name
       validate_semester_id
+      validate_name_uniqueness
 
       errors.empty?
     end
@@ -24,12 +25,14 @@ module Disciplines
       errors << 'Пустое название дисциплины' if @name.empty?
     end
 
-    def validate_semester_id
-      @semester_id == '' ? errors << 'Пустой id семестра' : validate_semester_existence
+    def validate_name_uniqueness
+      return unless Queries::DisciplinesQuery.name_exists_in_semester?(name: @name, semester_id: @semester_id)
+
+      errors << 'Дисциплина с указанным названием уже сущетвует в этом семестре'
     end
 
-    def validate_semester_existence
-      errors << 'Указанного семестра не существует' unless Queries::SemestersQuery.new.exists?(id: @semester_id)
+    def validate_semester_id
+      errors << 'Указанного семестра не существует' unless Semester.new(id: @semester_id).exists?
     end
   end
 end

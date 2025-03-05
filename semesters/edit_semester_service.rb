@@ -6,7 +6,7 @@ module Semesters
   # Service class for editing a semester from the table
   class EditSemesterService
     def call
-      semester_exists?(id: process_id_input) ? handle_form_validation : handle_missing_semester
+      Semester.new(id: process_id_input).exists? ? handle_form_validation : handle_missing_semester
     end
 
     private
@@ -25,10 +25,6 @@ module Semesters
       end_date = gets.chomp
 
       @form = SemestersForm.new(name: new_name, start_date: start_date, end_date: end_date)
-    end
-
-    def semester_exists?(id:)
-      Queries::SemestersQuery.new.exists?(id: id)
     end
 
     def handle_form_validation

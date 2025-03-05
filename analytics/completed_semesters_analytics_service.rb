@@ -3,7 +3,7 @@
 module Analytics
   # Service class to get analytics for completed semesters
   class CompletedSemestersAnalyticsService
-    include AnalyticsProcess
+    include AnalyticsPrint
     include AnalyticsCalculations
     include AnalyticsOperations
 
@@ -23,7 +23,11 @@ module Analytics
     }.freeze
 
     def process_analytics(type:)
-      Queries::SemestersQuery.new.all_ids(status: :completed).each { |id| send(type, id: id) }
+      active_semester_ids = Queries::SemestersQuery.new.all_ids(status: :completed)
+      return active_semester_ids.each { |id| send(type, id: id) } if active_semester_ids.any?
+
+      puts 'Не найдено ни одного активного семестра'
+      Utilities::LinesCleaner.instance.lines_to_clear += 1
     end
   end
 end

@@ -16,6 +16,7 @@ module Labs
 
     def valid?
       validate_name
+      validate_name_uniqueness
       validate_deadline
       validate_status
       validate_grade
@@ -32,6 +33,12 @@ module Labs
       errors << 'Пустое название лабы' if name.empty?
     end
 
+    def validate_name_uniqueness
+      return unless Queries::LabsQuery.name_exists_in_discipline?(name: @name, discipline_id: @discipline_id)
+
+      errors << 'Лаба с указанным названием уже сущетвует в этой дисциплине'
+    end
+
     def validate_deadline
       errors << 'Неправильный формат дедлайна' unless valid_date_format?(@deadline)
     end
@@ -41,19 +48,20 @@ module Labs
     end
 
     def validate_grade
-      errors << 'Неправильная отметка' if !@grade.match?(/^-?\d+$/) && @grade != ''
+      return if (@grade.match?(/^\d+$/) && @grade.to_i.negative? && @grade.to_i > 10) || @grade == ''
+
+      errors << 'Неправильная отметка'
     end
 
     def validate_discipline_id
-      @discipline_id == '' ? (errors << 'Пустой id дисциплины') : validate_discipline_existence
-    end
-
-    def validate_discipline_existence
-      errors << 'Указанной дисциплины не существует' unless Queries::DisciplinesQuery.new.exists?(id: @discipline_id)
+      errors << 'Указанной дисциплины не существует' unless Discipline.new(id: @discipline_id).exists?
     end
 
     def valid_date_format?(date)
       date.match?(/\d{4}-\d{2}-\d{2}/)
+      Date.parse(date)
+    rescue Date::Error
+      false
     end
   end
 end

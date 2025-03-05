@@ -14,6 +14,7 @@ module Semesters
 
     def valid?
       validate_name
+      validate_name_uniqueness
       validate_start_date
       validate_end_date
       validate_dates_order
@@ -25,6 +26,10 @@ module Semesters
 
     def validate_name
       errors << 'Пустое название семестра' if name.empty?
+    end
+
+    def validate_name_uniqueness
+      errors << 'Семестр с указанным названием уже сущетвует' if Queries::SemestersQuery.name_exists?(name: @name)
     end
 
     def validate_start_date
@@ -41,6 +46,9 @@ module Semesters
 
     def valid_date_format?(date)
       date.match?(/\d{4}-\d{2}-\d{2}/)
+      Date.parse(date)
+    rescue Date::Error
+      false
     end
   end
 end

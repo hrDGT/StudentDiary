@@ -3,7 +3,7 @@
 module Analytics
   # Service class to get analytics for a specific semester
   class SpecificSemesterAnalyticsService
-    include AnalyticsProcess
+    include AnalyticsPrint
     include AnalyticsCalculations
     include AnalyticsOperations
 
@@ -22,6 +22,7 @@ module Analytics
     ANALYTICS_TYPES = {
       specific_grades: :print_discipline_average_grades_analytics,
       specific_uncompleted: :print_uncompleted_lab_analytics,
+      specific_overdue: :print_overdue_lab_analytics,
       specific_full: :print_semester_analytics
     }.freeze
 

@@ -23,7 +23,7 @@ module Labs
 
     def process_user_input
       name = request_data_form_user(message: 'Введите название лабы')
-      deadline = request_data_form_user(message: 'Введите дедлайн лабы')
+      deadline = request_data_form_user(message: 'Введите дедлайн лабы (yyyy-mm-dd)')
       status = request_data_form_user(message: 'Введите статус лабы (completed/not completed)')
       grade = request_data_form_user(message: 'Введите отметку за лабу (оставьте пустым, если неизвестна)')
       discipline_id = request_data_form_user(message: 'Введите id дисциплины, к которой относится лаба')

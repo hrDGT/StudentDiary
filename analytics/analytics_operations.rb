@@ -13,6 +13,11 @@ module Analytics
       print_not_completed_lab_works(id: id)
     end
 
+    def print_overdue_lab_analytics(id:)
+      print_semester_name(id: id)
+      print_overdue_lab_works(id: id)
+    end
+
     def print_semester_analytics(id:)
       print_semester_name(id: id)
       print_semester_status(id: id)
@@ -21,8 +26,9 @@ module Analytics
       print_overall_average_grade(id: id)
       print_total_lab_works_number(id: id)
       print_completed_lab_works_percentage(id: id)
+      puts '/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\'
 
-      Utilities::LinesCleaner.instance.lines_to_clear += 1
+      Utilities::LinesCleaner.instance.lines_to_clear += 2
     end
   end
 end

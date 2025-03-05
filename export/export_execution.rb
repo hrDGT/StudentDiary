@@ -7,7 +7,7 @@ module Export
   # Executing specified commands for export
   module ExportExecution
     def self.execute
-      Utilities::LinesCleaner.instance.clear_lines(quantity: 0)
+      Utilities::LinesCleaner.instance.clear_lines
       Export::ExportService.new.call
 
       MenuConfig::Config.display_menu(:main)

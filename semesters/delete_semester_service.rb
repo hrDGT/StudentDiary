@@ -7,7 +7,7 @@ module Semesters
   class DeleteSemesterService
     def call
       process_user_input
-      Queries::SemestersQuery.new.exists?(id: @id) ? delete_semester : handle_existence_error
+      Semester.new(id: @id).exists? ? delete_semester : handle_existence_error
 
       Utilities::LinesCleaner.instance.lines_to_clear += 3
     end

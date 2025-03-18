@@ -75,6 +75,7 @@ module Queries
     end
 
     class << self
+
       def name_exists?(name:)
         Database::Database.instance.execute_query(
           query: 'SELECT name FROM semesters WHERE name = $1',

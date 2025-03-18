@@ -48,6 +48,19 @@ module Queries
       ).values.flatten
     end
 
+    def overdue_lab_works(id:)
+      Database::Database.instance.execute_query(
+        query: <<-SQL,
+          SELECT
+            labs.id
+          FROM
+            labs JOIN disciplines ON labs.discipline_id = disciplines.id JOIN semesters ON disciplines.semester_id = semesters.id
+          WHERE semesters.id = $1 AND labs.deadline < current_date AND labs.status = 'not completed'
+        SQL
+        values: [id]
+      ).values.flatten
+    end
+
     def all_ids(status:)
       case status
       when :completed
@@ -62,6 +75,14 @@ module Queries
     end
 
     class << self
+
+      def name_exists?(name:)
+        Database::Database.instance.execute_query(
+          query: 'SELECT name FROM semesters WHERE name = $1',
+          values: [name]
+        ).ntuples.positive?
+      end
+
       def discipline_ids_by_id(id:)
         Database::Database.instance.execute_query(query: 'SELECT id FROM disciplines WHERE semester_id = $1',
                                                   values: [id]).values.flatten

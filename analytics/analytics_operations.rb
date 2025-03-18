@@ -13,6 +13,11 @@ module Analytics
       print_not_completed_lab_works(id: id)
     end
 
+    def print_overdue_lab_analytics(id:)
+      print_semester_name(id: id)
+      print_overdue_lab_works(id: id)
+    end
+
     def print_semester_analytics(id:)
       print_semester_name(id: id)
       print_semester_status(id: id)

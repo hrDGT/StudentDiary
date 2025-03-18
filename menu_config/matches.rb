@@ -42,15 +42,17 @@ module MenuConfig
     ANALYTICS_SPECIFIC = {
       '1' => -> { Analytics::AnalyticsExecution.execute(operation: :specific_grades) },
       '2' => -> { Analytics::AnalyticsExecution.execute(operation: :specific_uncompleted) },
-      '3' => -> { Analytics::AnalyticsExecution.execute(operation: :specific_full) },
-      '4' => -> { Config.display_menu(:analytics) }
+      '3' => -> { Analytics::AnalyticsExecution.execute(operation: :specific_overdue) },
+      '4' => -> { Analytics::AnalyticsExecution.execute(operation: :specific_full) },
+      '5' => -> { Config.display_menu(:analytics) }
     }.freeze
 
     ANALYTICS_ACTIVE = {
       '1' => -> { Analytics::AnalyticsExecution.execute(operation: :active_grades) },
       '2' => -> { Analytics::AnalyticsExecution.execute(operation: :active_uncompleted) },
-      '3' => -> { Analytics::AnalyticsExecution.execute(operation: :active_full) },
-      '4' => -> { Config.display_menu(:analytics) }
+      '3' => -> { Analytics::AnalyticsExecution.execute(operation: :active_overdue) },
+      '4' => -> { Analytics::AnalyticsExecution.execute(operation: :active_full) },
+      '5' => -> { Config.display_menu(:analytics) }
     }.freeze
 
     ANALYTICS_COMPLETED = {

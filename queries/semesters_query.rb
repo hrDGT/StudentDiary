@@ -5,7 +5,7 @@ module Queries
   class SemestersQuery
     def display_list
       Database::Database.instance.execute_query(
-        query: 'SELECT * FROM semesters'
+        query: 'SELECT name, start_date, end_date FROM semesters'
       ).each { |row| puts row.values.join(' ') }
     end
 
@@ -39,9 +39,7 @@ module Queries
       Database::Database.instance.execute_query(
         query: <<-SQL,
           SELECT
-          SELECT
             labs.id
-          FROM
           FROM
             labs JOIN disciplines ON labs.discipline_id = disciplines.id JOIN semesters ON disciplines.semester_id = semesters.id
           WHERE semesters.id = $1 AND labs.status = 'not completed'
@@ -90,6 +88,16 @@ module Queries
     end
 
     class << self
+      def id_by_name(name:)
+        result = Database::Database.instance.execute_query(
+          query: 'SELECT id FROM semesters WHERE name = $1',
+          values: [name]
+        )
+        return nil if result.ntuples.zero?
+
+        result.getvalue(0, 0)
+      end
+
       def name_exists?(name:)
         Database::Database.instance.execute_query(
           query: 'SELECT name FROM semesters WHERE name = $1',

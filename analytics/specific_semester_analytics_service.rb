@@ -33,8 +33,9 @@ module Analytics
     end
 
     def process_user_input
-      puts 'Введите id семестра, по которому хотите получить аналитику'
-      id = gets.chomp
+      puts 'Введите название семестра, по которому хотите получить аналитику'
+      name = gets.chomp
+      id = Queries::SemestersQuery.id_by_name(name: name)
       @form = AnalyticsForm.new(id: id)
 
       Utilities::LinesCleaner.instance.lines_to_clear += 2

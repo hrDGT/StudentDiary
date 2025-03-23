@@ -15,8 +15,10 @@ module Semesters
     private
 
     def process_user_input
-      puts 'Введите id удаляемого семестра'
-      @id = gets.chomp
+      puts 'Введите название удаляемого семестра'
+      name = gets.chomp
+
+      @id = Queries::SemestersQuery.id_by_name(name: name)
     end
 
     def delete_semester

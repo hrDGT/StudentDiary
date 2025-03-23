@@ -7,18 +7,9 @@ module Export
   class ExportService
     def call
       process_user_input
+      @form.valid? ? export : handle_input_errors
 
-      if @form.valid?
-        @form.dir = File.join(@form.dir, 'export.csv')
-        export
-
-        Utilities::LinesCleaner.instance.lines_to_clear += 4
-      else
-        puts 'Ошибки ввода:'
-        puts @form.errors
-
-        Utilities::LinesCleaner.instance.lines_to_clear += 5 + @form.errors.size
-      end
+      Utilities::LinesCleaner.instance.lines_to_clear += 5 + @form.errors.size
     end
 
     private
@@ -34,12 +25,30 @@ module Export
     end
 
     def export
+      dir = File.join(@form.dir, "#{@form.table}.csv")
       data = Database::Database.instance.execute_query(query: "SELECT * FROM #{@form.table}")
+      return handle_emptiness_error if data.first.nil?
 
-      CSV.open(@form.dir, 'w') do |file|
+      save_to_csv(dir: dir, data: data)
+
+      puts "Данные успешно экспортированы в файл #{@form.table}.csv!"
+    end
+
+    def save_to_csv(dir:, data:)
+      CSV.open(dir, 'w') do |file|
         file << data.first.keys
         data.each { |line| file << line.values }
       end
+    end
+
+    def handle_input_errors
+      puts 'Ошибки ввода:'
+
+      puts @form.errors
+    end
+
+    def handle_emptiness_error
+      puts 'Таблица пуста!'
     end
   end
 end

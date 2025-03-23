@@ -77,7 +77,7 @@ module Analytics
 
     def print_lab_details(id:)
       model = Lab.new(id: id)
-      print "\t[#{model.status}] #{model.name}"
+      print "\t[#{model.status}] #{model.name} "
       print_lab_postscript(model: model)
 
       Utilities::LinesCleaner.instance.lines_to_clear += 1

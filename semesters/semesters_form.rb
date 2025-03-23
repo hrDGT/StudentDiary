@@ -12,9 +12,9 @@ module Semesters
       @errors = []
     end
 
-    def valid?
+    def valid?(is_adding: false)
       validate_name
-      validate_name_uniqueness
+      validate_name_uniqueness if is_adding
       validate_start_date
       validate_end_date
       validate_dates_order

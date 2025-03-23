@@ -12,15 +12,21 @@ module Disciplines
     private
 
     def process_id_input
-      puts 'Введите id изменяемой дисциплины'
-      @id = gets.chomp
+      puts 'Введите название изменяемой дисциплины'
+      name = gets.chomp
+      puts 'Введите название семестра, к которому относится изменяемая дисциплина'
+      semester_name = gets.chomp
+      semester_id = Queries::SemestersQuery.id_by_name(name: semester_name)
+
+      @id = Queries::DisciplinesQuery.id_by_name_and_semester(name: name, semester_id: semester_id)
     end
 
     def process_new_data_input
       puts 'Введите новое название дисциплины'
       new_name = gets.chomp
-      puts 'Введите новый id семестра, к которому относится дисциплина'
-      new_semester_id = gets.chomp
+      puts 'Введите название нового семестра, к которому относится дисциплина'
+      new_semester_name = gets.chomp
+      new_semester_id = Queries::SemestersQuery.id_by_name(name: new_semester_name)
 
       @form = DisciplinesForm.new(name: new_name, semester_id: new_semester_id)
     end
@@ -30,19 +36,19 @@ module Disciplines
       if @form.valid?
         edit_discipline
 
-        Utilities::LinesCleaner.instance.lines_to_clear += 6
+        Utilities::LinesCleaner.instance.lines_to_clear += 8
       else
         puts 'Ошибки ввода:'
         puts @form.errors
 
-        Utilities::LinesCleaner.instance.lines_to_clear += 7 + @form.errors.size
+        Utilities::LinesCleaner.instance.lines_to_clear += 9 + @form.errors.size
       end
     end
 
     def handle_missing_discipline
-      puts 'Дисциплины с указанным id не существует'
+      puts 'Дисциплины с указанным названием не существует'
 
-      Utilities::LinesCleaner.instance.lines_to_clear += 3
+      Utilities::LinesCleaner.instance.lines_to_clear += 5
     end
 
     def edit_discipline

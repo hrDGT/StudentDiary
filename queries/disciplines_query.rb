@@ -7,7 +7,7 @@ module Queries
       Database::Database.instance.execute_query(
         query: <<-SQL
           SELECT
-            disciplines.id, CONCAT(disciplines.name, ' — ', semesters.id), semesters.name
+            CONCAT(disciplines.name, ' — ', semesters.name)
           FROM
             disciplines JOIN semesters ON disciplines.semester_id = semesters.id
         SQL
@@ -15,6 +15,18 @@ module Queries
     end
 
     class << self
+      def id_by_name_and_semester(name:, semester_id:)
+        result = Database::Database.instance.execute_query(
+          query: <<-SQL,
+            SELECT id
+            FROM disciplines
+            WHERE name = $1 AND semester_id = $2
+          SQL
+          values: [name, semester_id]
+        )
+        result.ntuples.zero? ? nil : result.getvalue(0, 0)
+      end
+
       def name_exists_in_semester?(name:, semester_id:)
         Database::Database.instance.execute_query(
           query: <<-SQL,

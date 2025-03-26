@@ -7,7 +7,7 @@ module Semesters
   class AddNewSemesterService
     def call
       process_user_input
-      if @form.valid?
+      if @form.valid?(is_adding: true)
         add_semester
 
         Utilities::LinesCleaner.instance.lines_to_clear += 6

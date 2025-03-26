@@ -10,7 +10,7 @@ module Export
       Utilities::LinesCleaner.instance.clear_lines
       Export::ExportService.new.call
 
-      MenuConfig::Config.display_menu(:main)
+      MenuConfig::Config.display_menu(:export)
     end
   end
 end

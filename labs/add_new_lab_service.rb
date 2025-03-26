@@ -7,7 +7,7 @@ module Labs
   class AddNewLabService
     def call
       process_user_input
-      if @form.valid?
+      if @form.valid?(is_adding: true)
         add_lab
 
         Utilities::LinesCleaner.instance.lines_to_clear += 10
@@ -24,18 +24,25 @@ module Labs
     def process_user_input
       name = request_data_form_user(message: 'Введите название лабы')
       deadline = request_data_form_user(message: 'Введите дедлайн лабы (yyyy-mm-dd)')
-      status = request_data_form_user(message: 'Введите статус лабы (completed/not completed)')
       grade = request_data_form_user(message: 'Введите отметку за лабу (оставьте пустым, если неизвестна)')
-      discipline_id = request_data_form_user(message: 'Введите id дисциплины, к которой относится лаба')
+      discipline_name = request_data_form_user(message: 'Введите название дисциплины, к которой относится лаба')
+      semester_name = request_data_form_user(message: 'Введите название семестра, к которому относится дисциплина')
+      semester_id = Queries::SemestersQuery.id_by_name(name: semester_name)
+      discipline_id = Queries::DisciplinesQuery.id_by_name_and_semester(name: discipline_name, semester_id: semester_id)
 
-      @form = LabsForm.new(name: name, deadline: deadline, status: status, grade: grade,
-                           discipline_id: discipline_id)
+      @form = LabsForm.new(name: name, deadline: deadline, grade: grade, discipline_id: discipline_id)
     end
 
     def request_data_form_user(message:)
       puts message
 
       gets.chomp
+    end
+
+    def generate_status
+      current_date = Database::Database.instance.execute_query(query: 'SELECT CURRENT_DATE').getvalue(0, 0)
+
+      current_date < @form.deadline ? 'not completed' : 'completed'
     end
 
     def convert_grade
@@ -47,7 +54,7 @@ module Labs
         table: 'labs',
         name: @form.name,
         deadline: @form.deadline,
-        status: @form.status,
+        status: generate_status,
         grade: convert_grade,
         discipline_id: @form.discipline_id
       ).execute

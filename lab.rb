@@ -6,31 +6,25 @@ class Lab
 
   def initialize(id:)
     @id = id
-    load_data
+    @model = load_data
   end
 
   def exists?
-    return false unless @id.match?(/^\d+$/)
-
-    Database::Database.instance.execute_query(query: 'SELECT * FROM labs WHERE id = $1',
-                                              values: [@id]).ntuples.positive?
+    @model
   end
 
   def active?
     return false unless @id.match?(/^\d+$/)
 
     current_date = Database::Database.instance.execute_query(query: 'SELECT CURRENT_DATE').getvalue(0, 0)
-    deadline = Database::Database.instance.execute_query(
-      query: 'SELECT deadline FROM labs WHERE id = $1', values: [@id]
-    ).getvalue(0, 0)
 
-    current_date < deadline
+    current_date < @deadline
   end
 
   private
 
   def load_data
-    return nil unless @id.match?(/^\d+$/)
+    return nil if @id.nil? || !@id.match?(/^\d+$/)
 
     result = Database::Database.instance.execute_query(
       query: 'SELECT name, deadline, status, grade FROM labs WHERE id = $1',
@@ -39,5 +33,7 @@ class Lab
     return nil if result.values.empty?
 
     @name, @deadline, @status, @grade = result[0].values_at('name', 'deadline', 'status', 'grade')
+
+    result
   end
 end

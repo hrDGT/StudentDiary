@@ -6,20 +6,17 @@ class Discipline
 
   def initialize(id:)
     @id = id
-    load_data
+    @model = load_data
   end
 
   def exists?
-    return false unless @id.match?(/^\d+$/)
-
-    Database::Database.instance.execute_query(query: 'SELECT * FROM disciplines WHERE id = $1',
-                                              values: [@id]).ntuples.positive?
+    @model
   end
 
   private
 
   def load_data
-    return nil unless @id.match?(/^\d+$/)
+    return nil if @id.nil? || !@id.match?(/^\d+$/)
 
     result = Database::Database.instance.execute_query(
       query: 'SELECT name FROM disciplines WHERE id = $1',
@@ -28,5 +25,7 @@ class Discipline
     return nil if result.values.empty?
 
     @name = result[0].values_at('name')
+
+    result
   end
 end

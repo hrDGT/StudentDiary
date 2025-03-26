@@ -7,24 +7,25 @@ module Queries
       Database::Database.instance.execute_query(
         query: <<-SQL
           SELECT
-            labs.id, labs.name AS lab_name, labs.deadline, labs.status, CONCAT(labs.grade, ' — ', disciplines.id), disciplines.name AS discipline_name
+            labs.name, labs.deadline, labs.status, CONCAT(labs.grade, ' — ', disciplines.name)
           FROM
             labs JOIN disciplines ON labs.discipline_id = disciplines.id
         SQL
       ).each { |row| puts row.values.join(' ') }
     end
 
-    def self.name_exists_in_discipline?(name:, discipline_id:)
-      Database::Database.instance.execute_query(
-        query: <<-SQL,
-          SELECT
-            name
-          FROM
-            labs
-          WHERE name = $1 AND discipline_id = $2
-        SQL
-        values: [name, discipline_id]
-      ).ntuples.positive?
+    class << self
+      def id_by_name_and_disicpline(name:, discipline_id:)
+        result = Database::Database.instance.execute_query(
+          query: <<-SQL,
+            SELECT id
+            FROM labs
+            WHERE name = $1 AND discipline_id = $2
+          SQL
+          values: [name, discipline_id]
+        )
+        result.ntuples.zero? ? nil : result.getvalue(0, 0)
+      end
     end
   end
 end

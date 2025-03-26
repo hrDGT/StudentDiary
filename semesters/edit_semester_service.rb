@@ -12,8 +12,10 @@ module Semesters
     private
 
     def process_id_input
-      puts 'Введите id изменяемого семестра'
-      @id = gets.chomp
+      puts 'Введите название изменяемого семестра'
+      name = gets.chomp
+
+      @id = Queries::SemestersQuery.id_by_name(name: name)
     end
 
     def process_new_data_input

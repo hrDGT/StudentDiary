@@ -5,7 +5,7 @@ module Queries
   class SemestersQuery
     def display_list
       Database::Database.instance.execute_query(
-        query: 'SELECT * FROM semesters'
+        query: 'SELECT name, start_date, end_date FROM semesters'
       ).each { |row| puts row.values.join(' ') }
     end
 
@@ -61,6 +61,19 @@ module Queries
       ).values.flatten
     end
 
+    def overdue_lab_works(id:)
+      Database::Database.instance.execute_query(
+        query: <<-SQL,
+          SELECT
+            labs.id
+          FROM
+            labs JOIN disciplines ON labs.discipline_id = disciplines.id JOIN semesters ON disciplines.semester_id = semesters.id
+          WHERE semesters.id = $1 AND labs.deadline < current_date AND labs.status = 'not completed'
+        SQL
+        values: [id]
+      ).values.flatten
+    end
+
     def all_ids(status:)
       case status
       when :completed
@@ -75,6 +88,15 @@ module Queries
     end
 
     class << self
+      def id_by_name(name:)
+        result = Database::Database.instance.execute_query(
+          query: 'SELECT id FROM semesters WHERE name = $1',
+          values: [name]
+        )
+        return nil if result.ntuples.zero?
+
+        result.getvalue(0, 0)
+      end
 
       def name_exists?(name:)
         Database::Database.instance.execute_query(
@@ -82,7 +104,33 @@ module Queries
           values: [name]
         ).ntuples.positive?
       end
+    end
 
+    class << self
+      def name_exists?(name:)
+        Database::Database.instance.execute_query(
+          query: 'SELECT name FROM semesters WHERE name = $1',
+          values: [name]
+        ).ntuples.positive?
+      end
+
+      def discipline_ids_by_id(id:)
+        Database::Database.instance.execute_query(query: 'SELECT id FROM disciplines WHERE semester_id = $1',
+                                                  values: [id]).values.flatten
+      end
+
+      def all_grades(id:)
+        Database::Database.instance.execute_query(
+          query: <<-SQL,
+            SELECT
+              labs.grade
+            FROM
+              labs JOIN disciplines ON labs.discipline_id = disciplines.id JOIN semesters ON disciplines.semester_id = semesters.id
+            WHERE semesters.id = $1 AND labs.grade IS NOT NULL
+          SQL
+          values: [id]
+        ).values.flatten.map(&:to_i)
+      end
       def discipline_ids_by_id(id:)
         Database::Database.instance.execute_query(query: 'SELECT id FROM disciplines WHERE semester_id = $1',
                                                   values: [id]).values.flatten
